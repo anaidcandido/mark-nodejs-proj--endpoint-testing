@@ -1,7 +1,10 @@
 import supertest from "supertest";
 import app from "./server";
-import { MYSTERIOUS_ROBED_FIGURE } from "./constants/characters";
-import { CAVE_EXTERIOR } from "./constants/locations";
+import {
+  ADVENTURE_ADMIN,
+  MYSTERIOUS_ROBED_FIGURE,
+} from "./constants/characters";
+import { CAVE_EXTERIOR, HANDFORTH_PARISH_COUNCIL } from "./constants/locations";
 
 test("GET / responds with a welcome message from our mysterious robed figure", async () => {
   const response = await supertest(app).get("/");
@@ -56,7 +59,7 @@ test("GET /quest/decline responds with an apocalyptic message", async () => {
   expect(response.body.options).toStrictEqual({ restart: "/" });
 });
 
-test.skip("GET /quest/start/impossible responds with instant 'death'", async () => {
+test("GET /quest/start/impossible responds with instant 'death'", async () => {
   const response = await supertest(app).get("/quest/start/impossible");
 
   // there is _some_ location
@@ -73,3 +76,31 @@ test.skip("GET /quest/start/impossible responds with instant 'death'", async () 
   // includes option to restart
   expect(response.body.options).toMatchObject({ restart: "/" });
 });
+
+test("GET / help responds with an explanation of the repsonses", async() => {
+  const response = await supertest(app).get("/help");
+
+expect(response.body).toMatchObject({
+  location: HANDFORTH_PARISH_COUNCIL,
+    speech: {
+      speaker: ADVENTURE_ADMIN
+    }
+    });
+  });
+
+/*
+app.get("/help", (req, res) => {
+  res.json({
+    location: HANDFORTH_PARISH_COUNCIL,
+    speech: {
+      speaker: ADVENTURE_ADMIN,
+      text:
+        "This is the endpoint adventure! It's based on the classic 'choose your own adventure' books of ye olden 20th century times. When you visit an endpoint, you're presented with a scene and some text, and then you have a few options to choose from - your simulate turning to a new page by hitting a new endpoint.",
+    },
+    options: {
+      backToStart: "/",
+    },
+  });
+});
+
+*/
