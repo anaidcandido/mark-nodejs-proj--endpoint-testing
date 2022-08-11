@@ -69,4 +69,21 @@ app.get("/quest/decline", (req, res) => {
   });
 });
 
+app.get("/quest/start/impossible", (req,res) => {
+  res.json({
+    location: "Heaven",
+    speech: {
+      speaker: {
+        name: "Hulk",
+        description: "A short but fierce looking demon-thing",
+      },
+      text: "There is a Dragon excruciating fireBalls ",
+    },
+    options: {
+      restart: "/",
+    },
+  })
+})
+
+
 export default app;
